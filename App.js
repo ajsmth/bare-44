@@ -1,21 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from "react-native";
+import { useEffect } from "react";
+import * as Notifications from "expo-notifications";
 
 export default function App() {
+  useEffect(async () => {
+    await Notifications.getDevicePushTokenAsync();
+    const subscription = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log({ response });
+      }
+    );
+    return () => subscription.remove();
+  }, []);
+  console.log("hi");
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{ paddingTop: 100, flex: 1, backgroundColor: "red" }}>
+      <Text>Hi</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
